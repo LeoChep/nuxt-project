@@ -23,11 +23,24 @@ const vDrag = {
         if (!binding.value && (binding.value ?? "") !== "") return;
         // 拖拽实现
         const odiv = el.parentNode;
-        el.onmousedown = (eve: any) => {
+  
+        el.setDragStart=(api:(eve: any)=>void)=>{
+            el.onmousedown=api;
+            el.ontouchstart=api;
+        }
+        el.setDragEnd=(api:(eve: any)=>void)=>{
+            document.onmouseup=api;
+            document.ontouchend=api;
+        }
+        el.setDragMove=(api:(eve: any)=>void)=>{
+            document.onmousemove=api;
+            document.ontouchmove=api;
+        }
+        el.setDragStart ( (eve: any) => {
             odiv.style.zIndex = 1; //当前拖拽的在最前面显示
             eve = eve || window.event;
-            const mx = eve.pageX; //鼠标点击时的坐标
-            const my = eve.pageY; //鼠标点击时的坐标
+            const mx = eve.pageX||eve.touches[0].pageX; //鼠标点击时的坐标
+            const my = eve.pageY||eve.touches[0].pageY; //鼠标点击时的坐标
             const dleft = odiv.offsetLeft; //窗口初始位置
             const dtop = odiv.offsetTop;
             const clientWidth = document.documentElement.clientWidth; //页面的宽
@@ -36,9 +49,9 @@ const vDrag = {
             const clientHeight = document.documentElement.clientHeight; //页面的高
             const oHeight = odiv.clientHeight; //窗口的高度
             const maxY = clientHeight - oHeight; //y轴能移动的最大距离
-            document.onmousemove = (e: any) => {
-                const x = e.pageX;
-                const y = e.pageY;
+            el.setDragMove ( (e: any) => {
+                const x = e.pageX||e.touches[0].pageX;
+                const y = e.pageY||e.touches[0].pageY;
                 let left = x - mx + dleft; //移动后的新位置
                 let top = y - my + dtop; //移动后的新位置
                 if (left < 0) left = 0;
@@ -50,11 +63,11 @@ const vDrag = {
                 odiv.style.top = top + "px";
                 odiv.style.marginLeft = 0;
                 odiv.style.marginTop = 0;
-            };
-            document.onmouseup = () => {
-                document.onmousemove = null;
-            };
-        };
+            })
+            el.setDragEnd (() => {
+                el.setDragMove ( null);
+            })
+        })
     }
 };
 const vResize = {

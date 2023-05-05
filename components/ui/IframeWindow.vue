@@ -14,7 +14,7 @@ const close = () => {
 </script>
 <template>
   <UiNewWindow  :closeFun=close :resize-able="true" drag-able closeShow fullShow
-    width="600px" height="700px">
+    width="70vh" height="85vh">
     <Content />
   </UiNewWindow>
 </template>
