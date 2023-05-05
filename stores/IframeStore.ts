@@ -5,18 +5,29 @@ export const useIframeStore = definePiniaStore('iframeStore', {
   // a function that returns a fresh state
   state: () => ({
     iframes:[] as any[],
-    pushApi:(iframe:any)=>{}
   }),
   // optional actions
   actions: {
+    count(){return this.iframes.length},
     reset() {
       // `this` is the store instance
     
     },
     push(iframe:any){
-        // console.log(iframe)
-       this.pushApi(iframe)
-      // console.log(this.iframes)
+      this.iframes.push(iframe)
+       
+    },
+    close(iframe:any){
+      let i=0;
+      let index=-1;
+      for (let temp of this.iframes){
+        
+        if (iframe==temp)
+          index=i;
+          i++;
+      }
+      if (index>=0)
+      this.iframes.splice(index,1);
     }
   },
 })

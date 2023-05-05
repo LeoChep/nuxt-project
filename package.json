@@ -9,7 +9,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.1.0",
+    "@vitejs/plugin-vue": "^4.2.1",
     "node-sass": "^8.0.0",
     "nuxt": "^3.4.1",
     "sass": "^1.62.0",

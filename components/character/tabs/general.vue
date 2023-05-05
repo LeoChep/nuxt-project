@@ -61,4 +61,3 @@
 </div>
 </template>
 <script lang="scss"></script>
-<script setup></script>
