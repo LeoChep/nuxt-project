@@ -1,6 +1,6 @@
 <template>
     <transition name="drag-win">
-        <div class="drag-dialog ban-select-font window" ref="dragWin" v-show="props.modelValue" v-resize="props.resizeAble">
+        <div class="drag-dialog ban-select-font window" ref="dragWin" :style="{'z-index':props.zIndex} as StyleValue" v-onTouch="props.touchFun" v-show="props.modelValue" v-resize="props.resizeAble">
             <!-- 拖拽窗体头部 -->
             <div class="drag-bar" :style="props.headStyle" v-drag="props.dragAble">
                 <slot name="head" />
@@ -16,14 +16,20 @@
 </template>
   
 <script lang="ts" setup>
+import { StyleValue } from "vue";
 import { ref } from "vue";
+const vOnTouch={
+    mounted(el:any,binding:any) {
+        el.onmousedown=binding;
+        el.ontouchstart=binding;
+    },
+}
 const vDrag = {
     mounted: (el: any, binding: any, vnode: any) => {
         // 如果传递了false就不启用指令，反之true undefined null 不传 则启动
         if (!binding.value && (binding.value ?? "") !== "") return;
         // 拖拽实现
         const odiv = el.parentNode;
-  
         el.setDragStart=(api:(eve: any)=>void)=>{
             el.onmousedown=api;
             el.ontouchstart=api;
@@ -37,7 +43,7 @@ const vDrag = {
             document.ontouchmove=api;
         }
         el.setDragStart ( (eve: any) => {
-            odiv.style.zIndex = 1; //当前拖拽的在最前面显示
+           // odiv.style.zIndex = 1; //当前拖拽的在最前面显示
             eve = eve || window.event;
             const mx = eve.pageX||eve.touches[0].pageX; //鼠标点击时的坐标
             const my = eve.pageY||eve.touches[0].pageY; //鼠标点击时的坐标
@@ -203,6 +209,7 @@ interface Props {
     modelValue: boolean; //控制窗体的显示与否
     width?: string; // 默认宽 —— 设置头高 宽高最好传入变量
     height?: string; // 默认高
+    zIndex?: string; // 默认Zindex
     headHeight?: string; // 默认控制栏高
     headStyle?: string; // 控制栏样式
     mainStyle?: string; //主要内容区域样式
@@ -210,13 +217,15 @@ interface Props {
     dragAble?: boolean | string; // 是否可以拖拽 默认可拖拽
     closeShow?: boolean; // 关闭控制显示 默认不显示
     fullShow?: boolean; // 全屏控制显示 默认不显示
-    closeFun:Function
+    closeFun:Function;
+    touchFun:Function;
 }
 /** 组件调整参数默认值 */
 const props = withDefaults(defineProps<Props>(), {
     modelValue: true,
     width: "500px",
     height: "60vh",
+    zIndex:"100",
     headHeight: "35px",
     headStyle: "",
     mainStyle: "",
@@ -224,7 +233,8 @@ const props = withDefaults(defineProps<Props>(), {
     dragAble: "",
     closeShow: false,
     fullShow: false,
-    closeFun:Function
+    closeFun:Function,
+    touchFun:Function
 });
 
 // 窗体记录数据类型约束
@@ -250,6 +260,7 @@ const dragWin: any = ref(null);
 const emits = defineEmits(["update:modelValue"]);
 
 /** 方法定义 */
+
 // 内部控制窗口开关
 const controlDialog = () => {
     // emits("update:modelValue", !props.modelValue);
@@ -314,7 +325,9 @@ const fullScreen = () => {
     min-height: 200px;
     max-width: 100vw;
     max-height: 100vh;
-    background-color: #313438cc;
+    /* background-color: #313438cc; */
+    background-color: black
+
 }
 
 .drag-bar {
@@ -378,13 +391,13 @@ const fullScreen = () => {
 }
 
 .window {
-	z-index: 100;
+	/* z-index: 100; */
 	box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
 	border-radius: 4px;
 	/* border: 1px solid #ebeef5;
 	background-color: #fff; */
 	overflow: hidden;
-	color: #303133;
+	color: gray；
 }
 </style>
   
