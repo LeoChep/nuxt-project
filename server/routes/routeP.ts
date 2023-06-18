@@ -1,4 +1,6 @@
+let num=1;
 export default defineEventHandler(() => {
-  console.log("succses")
+  num++;
+  console.log("succses"+num)
     return "succses"
   })

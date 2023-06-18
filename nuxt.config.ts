@@ -1,8 +1,10 @@
+import { defineNuxtConfig } from 'nuxt/config'
+import path, { resolve } from "node:path";
 // https://nuxt.com/docs/api/configuration/nuxt-config
-
-
-export default defineNuxtConfig({
-
+export default defineNuxtConfig ({
+  alias:{
+    "@plugin":resolve("modules"),
+},
   modules: [
    [ '@pinia/nuxt',
     {
@@ -13,7 +15,7 @@ export default defineNuxtConfig({
         ['defineStore', 'definePiniaStore'],
       ],
     },
-  ]],
+  ],'@element-plus/nuxt'],
     css: [
        
       ]

@@ -16,16 +16,18 @@ export const useIframeStore = definePiniaStore('iframeStore', {
     push(iframe:any){
   
       this.iframes.push(iframe)
-      iframe.index=this.count();
+
+      iframe.zIndex=this.count();
        
     },
     close(iframe:any){
       let i=0;
       let index=-1;
       for (let temp of this.iframes){
-        
-        if (iframe==temp)
+        if (iframe==temp){
+          console.log(i)
           index=i;
+        }
           i++;
       }
       if (index>=0)
@@ -38,27 +40,23 @@ export const useIframeStore = definePiniaStore('iframeStore', {
         cache[i]=false;
       
       for (let temp of this.iframes){
-        cache[temp.index]=true;
-     //   console.log(temp.index)
+        cache[temp.zIndex]=true;
       }
-   //   console.log(cache)
-      let index=0;
+      let zIndex=0;
       for (let temp of this.iframes){
-        while (index<temp.index){
-          if (!cache[index]&&index!=temp.index)
+        while (zIndex<temp.zIndex){
+          if (!cache[zIndex]&&zIndex!=temp.zIndex)
           {
-       //     console.log(index)
-            cache[temp.index]=false;
-            temp.index=index;
-            cache[index]=true;
+            cache[temp.zIndex]=false;
+            temp.zIndex=zIndex;
+            cache[zIndex]=true;
             break;
           }
-          index++;
+          zIndex++;
         }
           
       }
-      iframe.index=this.count()
-  //    console.log(this.iframes)
+      iframe.zIndex=this.count()
     }
   },
 })

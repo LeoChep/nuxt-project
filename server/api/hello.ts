@@ -1,4 +1,5 @@
 import fs from 'node:fs'
+let num=1;
 function writeFile() {
     console.log("写入开始。");
     // 同步读取
@@ -14,10 +15,12 @@ function writeFile() {
         console.log("同步读取写入的内容2: " + writeData2.toString());
     });
     console.log("写入结束。");
+    num++;
 }
 
+
 export default defineEventHandler((event) => {
-    console.log("work")
+    console.log("work"+num)
     writeFile();
     return {
       api: 'works'

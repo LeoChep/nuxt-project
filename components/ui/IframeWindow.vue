@@ -12,7 +12,7 @@ const close = () => {
 };
 const top =()=>{
   iframeStore.top(props.content)
-  zIndex.value=props.content.index.toString();
+  zIndex.value=props.content.zIndex.toString();
 }
 iframeStore.$onAction((
   { name, // action 名称
@@ -24,7 +24,7 @@ iframeStore.$onAction((
 )=>{
   after((result:any)=>{
     if (name=='top'){
-      zIndex.value=props.content.index.toString();
+      zIndex.value=props.content.zIndex.toString();
     }
   })
 })

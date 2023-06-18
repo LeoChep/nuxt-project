@@ -326,7 +326,7 @@ const fullScreen = () => {
     max-width: 100vw;
     max-height: 100vh;
     /* background-color: #313438cc; */
-    background-color: black
+    background-color: gray
 
 }
 
