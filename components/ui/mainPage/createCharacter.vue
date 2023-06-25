@@ -1,8 +1,6 @@
 <template>
     {{ count }}
     <button @click="createCharacterFunc()">创建角色</button>
-    <button @click="createChatFunc()">创建聊天</button>
-    <ChatWindow></ChatWindow>
 </template>
 <script lang="tsx"  setup >
 
