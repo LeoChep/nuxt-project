@@ -3,6 +3,7 @@
     <!-- 头部 -->
     <div class="header">
       <h3>频道名称</h3>
+      <h3>{{ peerId}}</h3>
       <div class="user-actions">
         <!-- 用户操作按钮，比如设置、退出等 -->
       </div>
@@ -47,16 +48,29 @@
 </template>
 <script>
 import { useMessageStore } from '@/stores/ChatMessageStore';
+import {usePeerStore} from '@/stores/PeerStore'
+import { storeToRefs } from 'pinia';
 export default {
   data() {
+    const isBrowser = () => typeof window !== 'undefined'; 
     let messageStore = {messages:[]}
-    if (process.client){
+    let peerVid="unkonw"
+    let peerStore = usePeerStore(); 
+    if (isBrowser){
        messageStore = useMessageStore();
        if (!messageStore.isInit)
        messageStore.init();
+       const peerStore = usePeerStore(); 
+       const isInit=computed(() => peerStore.isInit);
+       if (!isInit.value)
+        peerStore.init();
+       peerVid=computed(() => peerStore.getPeerId());
+  
     }
+    
 
     return {
+      peerId: peerVid,
       channels: [
         { id: 1, name: '频道1' },
         { id: 2, name: '频道2' },

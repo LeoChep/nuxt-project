@@ -14,20 +14,35 @@ class DistPeer{
 
 }
 // and will appear in devtools
-export const useMessageStore = definePiniaStore("chatMessageStore", {
+export const usePeerStore = definePiniaStore("peerStore", {
   // a function that returns a fresh state
   state: () => {
     let user=""
     let peer=new Peer();
+    let peerId=""
     let distpeers=[] as DistPeer[];
+    let isInit=false;
     return {
       user,
       peer,
-      distpeers
+      distpeers,
+      isInit,
+      peerId
     };
   },
   // optional actions
   actions: {
+    getPeerId(){
+      console.log(this)
+      return this.peerId;
+    },
+    init(user:string){
+      this.user=user;
+      this.peer=this.createPeer();
+      this.isInit=true;
+      alert("初始化成功")
+      //alert(this.peer.id)
+    },
     link(distPeerId:string){
       const conn = this.peer.connect(distPeerId);
       conn.on('open', ()=> {
@@ -59,7 +74,12 @@ export const useMessageStore = definePiniaStore("chatMessageStore", {
       }
     },
     createPeer(){
-      let peer = new Peer;
+      const peer = new Peer();
+      peer.on('open',(id)=>{
+        this.peerId=peer.id;
+        console.log(peer)
+        alert("peerid:"+peer.id)
+      })
       peer.on('connection', (conn) =>{ 
         conn.on('open',()=> {
           // Receive messages
@@ -68,6 +88,7 @@ export const useMessageStore = definePiniaStore("chatMessageStore", {
           });
           });
        });
+    
       return peer;
     }
 

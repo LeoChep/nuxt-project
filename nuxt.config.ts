@@ -5,7 +5,9 @@ export default defineNuxtConfig ({
   alias:{
     "@plugin":resolve("modules"),
 },
+  ssr:false,
   modules: [
+    
    [ '@pinia/nuxt',
     {
       autoImports: [
@@ -18,7 +20,7 @@ export default defineNuxtConfig ({
   ],'@element-plus/nuxt'],
     css: [
        
-      ]
+      ],
      
     
 })
